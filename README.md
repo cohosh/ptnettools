@@ -71,3 +71,7 @@ e.g.,
   numactl --cpunodebind=1 --membind=1 tornettools simulate -a '--parallelism=8 --seed=666 --template-directory=shadow.data.template --model-unblocked-syscall-latency=true' tornet-0.01
 
 - be aware of this: https://shadow.github.io/docs/guide/system_configuration.html
+
+### Snowflake experiments
+
+- need the server patch

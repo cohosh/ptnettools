@@ -4,6 +4,7 @@ import argparse
 from yaml import load, dump
 
 import lyrebird
+import snowflake
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
@@ -18,7 +19,8 @@ def main():
         description="Extend a tornettols generated shadow config for PT experiments")
     parser.add_argument('--path', type=str, help='Path to the tornettools generated experiment directory')
     parser.add_argument('--transport', type=str, help='Name of the transport that is being tested')
-    parser.add_argument('--transport-bin-path', type=str, help='Path for the transport binary')
+    parser.add_argument('--transport-bin-path', type=str, help='Path to the transport binary (or folder containing multiple binaries)')
+    parser.add_argument('--transport-stats-path', type=str, help='Path to transport specific metrics file')
     args = parser.parse_args()
 
     global config
@@ -31,9 +33,11 @@ def main():
     match args.transport:
         case "obfs4":
             config = lyrebird.update_config(args.path, tor_path, config, args.transport_bin_path)
+        case "snowflake":
+            config = snowflake.update_config(args.path, tor_path, config, args.transport_bin_path, args.transport_stats_path)
         case _:
-            print(f"{args.transport} not supported. Currently supported transports are:\n \
-                    obfs4")
+            print(f"{args.transport} not supported. Currently supported transports are:\n" + \
+                    "obfs4\nsnowflake")
             exit(1)
 
     print("Overwriting config...")
