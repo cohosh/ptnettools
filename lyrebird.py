@@ -1,17 +1,6 @@
 import os
 
-def assign_ip(config):
-    assigned_ips = {host['ip_addr'] for host in config['hosts'].values() if 'ip_addr' in host}
-    for a in range(1, 256):
-        for b in range(1, 256):
-            for c in range(1, 256):
-                for d in range(1, 256):
-                    ip = f"{a}.{b}.{c}.{d}"
-                    if ip not in assigned_ips:
-                        return ip
-    else:
-        print("No available IPs")
-        exit(1)
+import util
 
 def generate_server_torrc(path):
     torrc = "BridgeRelay 1\n" + \
@@ -26,10 +15,6 @@ def generate_client_torrc(path, ip):
         f"ClientTransportPlugin obfs4 exec {path}\n" + \
         f"Bridge obfs4 {ip}:8443 cert=u9i4Els/5iMAL0OD5Lu9MBDjxJE/zEa116D35obufc0NYTWBgRLf3qur92WL9hmN30J1Bw iat-mode=0"
     return torrc
-
-def write_torrc(path, torrc):
-    with open(path, 'w', encoding="utf-8") as f:
-        f.write(torrc)
 
 def create_bridge_host(path, tor_path, bridge_ip, config):
     # Add bridge to shadow config
@@ -66,9 +51,9 @@ def create_bridge_host(path, tor_path, bridge_ip, config):
 
 def update_config(path, tor_path, config, bin_path):
 
-    bridge_ip = assign_ip(config)
-    write_torrc(path+"/conf/server.pt.torrc", generate_server_torrc(bin_path))
-    write_torrc(path+"/conf/client.pt.torrc", generate_client_torrc(bin_path, bridge_ip))
+    bridge_ip = util.assign_ip(config)
+    util.write_torrc(path+"/conf/server.pt.torrc", generate_server_torrc(bin_path))
+    util.write_torrc(path+"/conf/client.pt.torrc", generate_client_torrc(bin_path, bridge_ip))
 
     config = create_bridge_host(path, tor_path, bridge_ip, config)
     # Update perf clients to use client.pt.torrc
