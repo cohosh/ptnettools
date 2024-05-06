@@ -30,15 +30,14 @@ def main():
     tor_path = get_tor_path()
     print(f"Found tor path: {tor_path}")
 
-    match args.transport:
-        case "obfs4":
-            config = lyrebird.update_config(args.path, tor_path, config, args.transport_bin_path)
-        case "snowflake":
-            config = snowflake.update_config(args.path, tor_path, config, args.transport_bin_path, args.transport_stats_path)
-        case _:
-            print(f"{args.transport} not supported. Currently supported transports are:\n" + \
-                    "obfs4\nsnowflake")
-            exit(1)
+    if args.transport == "obfs4":
+        config = lyrebird.update_config(args.path, tor_path, config, args.transport_bin_path)
+    elif args.transport == "snowflake":
+        config = snowflake.update_config(args.path, tor_path, config, args.transport_bin_path, args.transport_stats_path)
+    else:
+        print(f"{args.transport} not supported. Currently supported transports are:\n" + \
+                "obfs4\nsnowflake")
+        exit(1)
 
     print("Overwriting config...")
     with open(args.path+"/shadow.config.yaml", 'w') as f:
