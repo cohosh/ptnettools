@@ -12,7 +12,7 @@ def generate_server_torrc(path):
 def generate_client_torrc(path):
     torrc = "UseBridges 1\n" + \
         "UseEntryGuards 1\n" + \
-        f"ClientTransportPlugin snowflake exec {path} -keep-local-addresses -log pt.log -unsafe-logging\n" + \
+        f"ClientTransportPlugin snowflake exec {path} -keep-local-addresses\n" + \
         f"Bridge snowflake 192.0.2.1:80 ice=stun:stun:3478 url=http://broker:8080"
     return torrc
 
@@ -50,7 +50,7 @@ def create_broker_host(path, exp_path, config):
         'processes': [
             {
                 'path': path + "/broker",
-                'args': '-addr ":8080" -disable-tls -unsafe-logging -allowed-relay-pattern ^bridge$ -bridge-list-path bridge-list.json',
+                'args': '-addr ":8080" -disable-tls -unsafe-logging -allowed-relay-pattern ^bridge$ -bridge-list-path bridge-list.json -disable-geoip',
                 'start_time': 1,
                 'expected_final_state': 'running'
             }
@@ -87,7 +87,7 @@ def create_proxy_hosts(path, config):
             'processes': [
                 {
                     'path': path + "/proxy",
-                    'args': "-verbose -unsafe-logging -keep-local-addresses -broker http://broker:8080 -relay ws://bridge:8080 -stun stun:stun:3478 -allowed-relay-hostname-pattern ^bridge$ -allow-non-tls-relay -nat-probe-server http://probetest:8443/probe",
+                    'args': "-keep-local-addresses -broker http://broker:8080 -relay ws://bridge:8080 -stun stun:stun:3478 -allowed-relay-hostname-pattern ^bridge$ -allow-non-tls-relay -nat-probe-server http://probetest:8443/probe",
                     'start_time': 3,
                     'expected_final_state': 'running'
                 }
