@@ -5,6 +5,7 @@ from yaml import load, dump
 
 import lyrebird
 import snowflake
+import webtunnel
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
@@ -34,6 +35,8 @@ def main():
         config = lyrebird.update_config(args.path, tor_path, config, args.transport_bin_path)
     elif args.transport == "snowflake":
         config = snowflake.update_config(args.path, tor_path, config, args.transport_bin_path, args.transport_stats_path)
+    elif args.transport == "webtunnel":
+        config = webtunnel.update_config(args.path, tor_path, config, args.transport_bin_path)
     else:
         print(f"{args.transport} not supported. Currently supported transports are:\n" + \
                 "obfs4\nsnowflake")
