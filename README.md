@@ -65,6 +65,7 @@ Snowflake has multiple binaries, each of which should be compiled and installed 
 - proxy
 - server
 - probetest
+
 The server binary will need [this patch](https://raw.githubusercontent.com/cohosh/shadow-snowflake-minimal/main/0001-Snowflake-shadow-patch.patch) to run in Shadow. See [Issue #3278](https://github.com/shadow/shadow/issues/3278) for more details.
 
 In addition, you will need a STUN server binary installed in the same directory:
