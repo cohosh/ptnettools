@@ -41,7 +41,7 @@ def main():
         config = webtunnel.update_config(args.path, tor_path, config, args.transport_bin_path)
     else:
         print(f"{args.transport} not supported. Currently supported transports are:\n" + \
-                "obfs4\nsnowflake")
+                "obfs4\nsnowflake\nwebtunnel")
         exit(1)
 
     '''

@@ -80,7 +80,7 @@ For a snowflake experiment in directory `tornet-0.1` and the above binaries inst
 
 #### Webtunnel experiments
 
-Snowflake has a client and server binary, each of which should be compiled and installed in a single directory to be passed into ptnettools. This directory should contain each of:
+Webtunnel has a client and server binary, each of which should be compiled and installed in a single directory to be passed into ptnettools. This directory should contain each of:
 - client
 - server
 
@@ -90,6 +90,15 @@ For a webtunnel experiment in directory `tornet-0.1` and the above binaries inst
 ```
 
 Note: these Shadow experiments do not have the fully nginx reverse proxy set up. Clients instead make a direct connection to the Tor bridge. This shouldn't introduce measurable network effects, but should be modified if you want to model a webtunnel bridge that also receives a significant amount of non-circumvention traffic.
+
+### Great bottleneck
+
+There are some facilities to enable great bottleneck experiments:
+
+- You can use the `update-model.py` script to write a new network graph with higher packet loss rates on the network nodes that correspond to CN cities.
+- You can use the `ptnettools.py --china-perf-frac=F` option to reassign fraction F of the perfclients to run inside the CN network nodes.
+
+These steps would be run prior to simulation.
 
 ### Running Shadow simulations
 
