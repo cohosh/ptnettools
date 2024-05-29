@@ -52,6 +52,8 @@ if __name__ == "__main__":
 
     network = read_graph(network_model_path)
     bottleneck_nodes = find_nodes(network, 'CN')
+    print(f"Found {len(bottleneck_nodes)} net ids with a country code of 'CN':")
+    print(bottleneck_nodes)
     network = make_directed(network)
     update_bottleneck_edges(network, bottleneck_nodes)
     write_graph(network)
